@@ -12,6 +12,7 @@ gem 'sqlite3', '1.3.13'
 
 group :development, :test do
   gem 'byebug',  '9.0.6', platform: :mri
+  gem 'rubocop', '0.49.1', require: false
 end
 
 group :development do

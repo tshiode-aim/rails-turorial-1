@@ -1,0 +1,168 @@
+inherit_from:
+  - .rubocop_todo.yml
+
+Rails:
+  Enabled: true
+
+AllCops:
+  TargetRubyVersion: 2.4
+  DisplayCopNames: true
+  Exclude:
+    - 'bin/**/*'
+    - 'db/schema.rb'
+    - 'db/migrate/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'containers/**/*'
+    - 'tools/ansible/**/*'
+    - 'tools/docker/**/*'
+    - 'tools/kinopo_sokuho/**/*'
+    - 'tools/jenkins/**/*'
+
+##################### Rails #################################
+
+Rails/OutputSafety:
+  Enabled: false
+
+Rails/DynamicFindBy:
+  Exclude:
+    - 'spec/**/*' # capybara find_by_idメソッドを対象外にするため
+
+##################### Layout ##################################
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/SpaceInsideArrayPercentLiteral:
+  Exclude:
+    - 'app/models/role.rb'
+
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Exclude:
+    - 'app/models/role.rb'
+
+##################### Lint ##################################
+
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
+
+Lint/ParenthesesAsGroupedExpression:
+  Exclude:
+    - 'spec/**/*'
+
+##################### Style ##################################
+
+Style/CommandLiteral:
+  EnforcedStyle: mixed
+
+Style/FileName:
+  Exclude:
+    - 'config/deploy/*'
+    - 'config/environments/*'
+
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: true
+  EnforcedStyle: 'braces_for_chaining'
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/ClassVars:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+# https://github.com/bbatsov/rubocop/issues/3019#issuecomment-220761812
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Lambda:
+  Enabled: false
+
+Style/MultilineBlockChain:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Style/NestedParenthesizedCalls:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/PredicateName:
+  Enabled: false
+
+Style/TrailingCommaInLiteral:
+  Enabled: false
+
+Style/TernaryParentheses:
+  EnforcedStyle: require_parentheses_when_complex
+
+Style/SingleLineBlockParams:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Exclude:
+    - 'app/models/role.rb'
+  PreferredDelimiters:
+    default: '()'
+    '%i': '()'
+    '%I': '()'
+    '%r': '{}'
+    '%w': '()'
+    '%W': '()'
+
+#################### Metrics ################################
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'app/admin/**/*.rb' # ActiveAdmin.register_page 'XXX' do で除外
+    - 'spec/**/*.rb'      # describe 'XXX' do で除外
+    - '**/*.rake'         # namespace :XXX do　で除外
+    - 'Gemfile'           # 設定ファイルなので除外
+    - 'config/**/*.rb'    # 設定関係なので除外
+    - 'app/models/concerns/receipt.rb'              # inclued do ブロックでリファクタリングしづらいので除外
+    - 'app/models/concerns/character_searchable.rb' # inclued do ブロックでリファクタリングしづらいので除外
+    - 'app/models/concerns/player_gift_searchable.rb' # inclued do ブロックでリファクタリングしづらいので除外
+    - 'app/models/concerns/clan_searchable.rb'      # inclued do ブロックでリファクタリングしづらいので除外
+    - 'tools/docker/containers/lfs_master_data/embulk_bundle/spec/**/*.rb' # describe 'XXX' do で除外
