@@ -15,7 +15,7 @@ describe 'visit Static pages', type: :feature do
 
     it_should_behave_like 'should response code 200'
     it 'should have a word "Home" in the title' do
-      is_expected.to have_selector('title', text: "Home | #{base_title}", visible: false)
+      is_expected.to have_selector('title', text: "#{base_title}", visible: false)
     end
   end
 
@@ -24,7 +24,7 @@ describe 'visit Static pages', type: :feature do
 
     it_should_behave_like 'should response code 200'
     it 'should have a word "Home" in the title' do
-      is_expected.to have_selector('title', text: "Home | #{base_title}", visible: false)
+      is_expected.to have_selector('title', text: "#{base_title}", visible: false)
     end
   end
 
