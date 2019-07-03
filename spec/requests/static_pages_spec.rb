@@ -14,7 +14,7 @@ describe 'visit Static pages', type: :feature do
     before { visit root_url }
 
     it_should_behave_like 'should response code 200'
-    it 'should have a word "Home" in the content of the title tag' do
+    it 'should have a word "Home" in the title' do
       is_expected.to have_selector('title', text: "Home | #{base_title}", visible: false)
     end
   end
@@ -23,7 +23,7 @@ describe 'visit Static pages', type: :feature do
     before { visit static_pages_home_url }
 
     it_should_behave_like 'should response code 200'
-    it 'should have a word "Home" in the content of the title tag' do
+    it 'should have a word "Home" in the title' do
       is_expected.to have_selector('title', text: "Home | #{base_title}", visible: false)
     end
   end
@@ -32,7 +32,7 @@ describe 'visit Static pages', type: :feature do
     before { visit static_pages_help_url }
 
     it_should_behave_like 'should response code 200'
-    it 'should have a word "Help" in the content of the title tag' do
+    it 'should have a word "Help" in the title' do
       is_expected.to have_selector('title', text: "Help | #{base_title}", visible: false)
     end
   end
@@ -41,7 +41,7 @@ describe 'visit Static pages', type: :feature do
     before { visit static_pages_about_url }
 
     it_should_behave_like 'should response code 200'
-    it 'should have a word "About" in the content of the title tag' do
+    it 'should have a word "About" in the title' do
       is_expected.to have_selector('title', text: "About | #{base_title}", visible: false)
     end
   end
@@ -50,7 +50,7 @@ describe 'visit Static pages', type: :feature do
     before { visit static_pages_contact_url }
 
     it_should_behave_like 'should response code 200'
-    it 'should have a word "Contact" in the content of the title tag' do
+    it 'should have a word "Contact" in the title' do
       is_expected.to have_selector('title', text: "Contact | #{base_title}", visible: false)
     end
   end
