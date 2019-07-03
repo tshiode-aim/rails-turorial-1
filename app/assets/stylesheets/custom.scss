@@ -63,6 +63,11 @@ p {
   font-weight: bold;
 }
 
+#logo:hover {
+  color: #fff;
+  text-decoration: none;
+}
+
 /* footer */
 
 footer {
@@ -93,10 +98,9 @@ footer ul li {
   float: left;
   margin-left: 15px;
 }
-#logo:hover {
-  color: #fff;
-  text-decoration: none;
-}
+
+/* すべての画像を非表示にするCSSの演習 */
+
 img {
   display: none;
 }
