@@ -1,6 +1,3 @@
-inherit_from:
-  - .rubocop_todo.yml
-
 Rails:
   Enabled: true
 
@@ -166,3 +163,8 @@ Metrics/BlockLength:
     - 'app/models/concerns/player_gift_searchable.rb' # inclued do ブロックでリファクタリングしづらいので除外
     - 'app/models/concerns/clan_searchable.rb'      # inclued do ブロックでリファクタリングしづらいので除外
     - 'tools/docker/containers/lfs_master_data/embulk_bundle/spec/**/*.rb' # describe 'XXX' do で除外
+
+#################### Misc ################################
+
+SpaceAroundEqualsInParameterDefault:
+  EnforcedStyle: no_space
