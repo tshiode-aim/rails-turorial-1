@@ -28,4 +28,11 @@ class User < ApplicationRecord
   def authenticated?(remember_token)
     BCypt::Password.new(remember_digest).is_password?(remember_token)
   end
+
+  def forget
+    # rubocop:disable Rails/SkipsModelValidations
+    ## パスワードの入力を回避するため、意図的にバリデーションをスキップする
+    update_attribute(:remember_digest, nil)
+    # rubocop:enable Rails/SkipsModelValidations
+  end
 end
