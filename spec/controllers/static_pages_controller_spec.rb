@@ -6,7 +6,6 @@ describe 'visit Static pages', type: :feature do
   let(:base_title) { 'Ruby on Rails Tutorial Sample App' }
 
   context 'when access to root_url' do
-<<<<<<< HEAD
     before { visit root_url }
 
     it_should_behave_like 'should response code 200'
@@ -16,10 +15,7 @@ describe 'visit Static pages', type: :feature do
   end
 
   context 'when access to static_pages_home_url' do
-    before { visit static_pages_home_url }
-=======
     before { visit root_path }
->>>>>>> テストをRSpecで記述
 
     it_should_behave_like 'should response code 200'
     it 'should have a word "Home" in the title' do
