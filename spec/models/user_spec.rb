@@ -3,21 +3,25 @@ require 'spec_helper'
 
 describe User, type: :model do
   describe 'validation' do
-    let(:user) { build(:user) }
+    let(:user) { build(:user, name: name, email: email, password: password, password_confirmation: password) }
+    let(:name) { 'Example User' }
+    let(:email) { 'user@example.com' }
+    let(:password) { 'foobar' }
+
     subject { user }
 
-    it 'should accept valid user' do
-      is_expected.to be_valid
+    context 'when user all parameter valid' do
+      it { is_expected.to be_valid }
     end
 
     context 'when name is only space' do
-      before { user.name = ' ' }
+      let(:name) { ' ' }
 
       it { is_expected.to be_invalid }
     end
 
     context 'when name over 50 characters' do
-      before { user.name = 'a' * 51 }
+      let(:name) { 'a' * 51 }
 
       it { is_expected.to be_invalid }
     end
@@ -41,13 +45,13 @@ describe User, type: :model do
     end
 
     context 'when email is only space' do
-      before { user.email = ' ' }
+      let(:email) { ' ' }
 
       it { is_expected.to be_invalid }
     end
 
     context 'when email is over 255 characters' do
-      before { user.email = 'a' * 244 + '@example.com' }
+      let(:email) { 'a' * 244 + '@example.com' }
 
       it { is_expected.to be_invalid }
     end
@@ -73,20 +77,16 @@ describe User, type: :model do
     end
 
     context 'when same email' do
-      before do
-        @duplicate_user = user.dup
-        user.save
-        @duplicate_user.email = user.email.upcase
-      end
+      before { user.dup.save }
 
-      it 'same email user should be reject' do
-        expect(@duplicate_user).to be_invalid
-      end
+      it { is_expected.to be_invalid }
     end
 
     context 'when email with mixed case' do
       let(:mixed_case_email) { 'Foo@ExAMPle.CoM' }
-      before { user.update_attributes(email: mixed_case_email) }
+      let(:email) { mixed_case_email }
+
+      before { user.save }
 
       it 'should email read from the database is lower case' do
         expect(mixed_case_email.downcase).to eq user.reload.email
@@ -94,13 +94,13 @@ describe User, type: :model do
     end
 
     context 'when password is only space' do
-      before { user.password = user.password_confirmation = ' ' * 6 }
+      let(:password) { ' ' * 6 }
 
       it { is_expected.to be_invalid }
     end
 
     context 'when password is less than 6 characters' do
-      before { user.password = user.password_confirmation = 'a' * 5 }
+      let(:password) { 'a' * 5 }
 
       it { is_expected.to be_invalid }
     end
