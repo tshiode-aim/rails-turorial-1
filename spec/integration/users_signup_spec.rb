@@ -14,6 +14,9 @@ describe 'users signup', type: :feature do
         fill_in 'Confirmation', with: 'bar'
         click_on 'Create my account'
       }.to change(User, :count).by(0)
+
+    it 'should not increase user count' do
+      expect(initial_user_count).to eq User.count
     end
 
     describe 'after redirect page' do

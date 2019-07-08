@@ -3,7 +3,7 @@ require 'spec_helper'
 
 describe User, type: :model do
   describe 'validation' do
-    let(:user) { build(:user, name: name, email: email, password: password, password_confirmation: password) }
+    let(:user) { build(:michael, name: name, email: email, password: password, password_confirmation: password) }
     let(:name) { 'Example User' }
     let(:email) { 'user@example.com' }
     let(:password) { 'foobar' }
@@ -80,7 +80,7 @@ describe User, type: :model do
       end
 
       context 'when same email' do
-        before { create(:user, email: email, name: 'Other User') }
+        before { create(:michael, email: email, name: 'Other User') }
 
         it { is_expected.to be_invalid }
       end
