@@ -5,9 +5,7 @@ describe 'users signup', type: :feature do
   subject { page }
 
   context 'when signup invalid information' do
-    let!(:user_count) { User.count }
-
-    before do
+    def signup_invalid_information
       visit signup_path
       fill_in 'Name', with: ''
       fill_in 'Email', with: 'user@invalid'
@@ -17,25 +15,27 @@ describe 'users signup', type: :feature do
     end
 
     it 'should not increase user count' do
-      expect(user_count).to eq User.count
+      expect { signup_invalid_information }.to change(User, :count).by(0)
     end
 
-    it 'should have error messages' do
-      is_expected.to have_selector('div#error_explanation > ul > li', text: "Name can't be blank")
-      is_expected.to have_selector('div#error_explanation > ul > li', text: 'Email is invalid')
-      is_expected.to have_selector('div#error_explanation > ul > li', text: "Password confirmation doesn't match Password")
-      is_expected.to have_selector('div#error_explanation > ul > li', text: 'Password is too short (minimum is 6 characters)')
-    end
+    describe 'after redirect page' do
+      before { signup_invalid_information }
 
-    it 'should redirect signup page' do
-      is_expected.to have_selector('form[action="/signup"]')
+      it 'should have error messages' do
+        is_expected.to have_selector('div#error_explanation > ul > li', text: "Name can't be blank")
+        is_expected.to have_selector('div#error_explanation > ul > li', text: 'Email is invalid')
+        is_expected.to have_selector('div#error_explanation > ul > li', text: "Password confirmation doesn't match Password")
+        is_expected.to have_selector('div#error_explanation > ul > li', text: 'Password is too short (minimum is 6 characters)')
+      end
+
+      it 'should redirect signup page' do
+        is_expected.to have_selector('form[action="/signup"]')
+      end
     end
   end
 
   context 'when signup valid information' do
-    let!(:user_count) { User.count }
-
-    before do
+    def signup_valid_information
       visit signup_path
       fill_in 'Name', with: 'Example User'
       fill_in 'Email', with: 'user@example.com'
@@ -45,15 +45,19 @@ describe 'users signup', type: :feature do
     end
 
     it 'should increase user count' do
-      expect(user_count + 1).to eq User.count
+      expect { signup_valid_information }.to change(User, :count).by(1)
     end
 
-    it 'should not have any error messages' do
-      is_expected.to have_no_selector('div#error_explanation')
-    end
+    describe 'after redirect page' do
+      before { signup_valid_information }
 
-    it 'should redirect user page' do
-      is_expected.to have_selector('section.user_info')
+      it 'should not have any error messages' do
+        is_expected.to have_no_selector('div#error_explanation')
+      end
+
+      it 'should redirect user page' do
+        is_expected.to have_selector('section.user_info')
+      end
     end
   end
 end
