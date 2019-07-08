@@ -155,6 +155,7 @@ Metrics/BlockLength:
   Exclude:
     - 'app/admin/**/*.rb' # ActiveAdmin.register_page 'XXX' do で除外
     - 'spec/**/*.rb'      # describe 'XXX' do で除外
+    - 'test/**/*.rb'      # test 'XXX' do で除外
     - '**/*.rake'         # namespace :XXX do　で除外
     - 'Gemfile'           # 設定ファイルなので除外
     - 'config/**/*.rb'    # 設定関係なので除外
