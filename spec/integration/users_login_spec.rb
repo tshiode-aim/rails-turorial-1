@@ -60,7 +60,7 @@ describe 'users login', type: :feature do
     before do
       log_in_as(user)
       logout
-      logout
+      force_logout
     end
 
     it 'should redirect root_path' do
@@ -73,29 +73,30 @@ describe 'users login', type: :feature do
     end
   end
 
-  describe 'remembering' do
-    let(:remember_token) { page.driver.browser.rack_mock_session.cookie_jar['remember_token'] }
-    let(:remember_digest) { user.reload.remember_digest }
-
-    context 'when login with remembering' do
-      before { log_in_as(user, remember_me: true) }
-
-      it 'should match remember_token and remember_digest' do
-        expect(BCrypt::Password.new(remember_digest).is_password?(remember_token)).to be true
-      end
+  context 'when login with remembering' do
+    before do
+      allow(User).to receive(:new_token).and_return('remember_token')
+      log_in_as(user, remember_me: true)
     end
 
-    context 'when without remembering' do
-      before do
-        log_in_as(user, remember_me: true)
-        logout
-        log_in_as(user, remember_me: false)
-      end
+    subject { page.driver.browser.rack_mock_session.cookie_jar['remember_token'] }
 
-      it 'should not exist remember_token and remember_digest' do
-        expect(remember_token).to be_blank
-        expect(remember_digest).to be_blank
-      end
+    it { is_expected.to eq 'remember_token' }
+  end
+
+  context 'when login without remembering' do
+    before do
+      log_in_as(user, remember_me: true)
+      logout
+      log_in_as(user, remember_me: false)
     end
+
+    subject { page.driver.browser.rack_mock_session.cookie_jar['remember_token'] }
+
+    it { is_expected.to be_blank }
+
+    subject { user.reload.remember_digest }
+
+    it { is_expected.to be_blank }
   end
 end

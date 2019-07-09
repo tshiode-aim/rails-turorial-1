@@ -2,25 +2,29 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe SessionsHelper, type: :helper do
-  let(:user) { create(:user) }
+  describe '#current_user' do
+    subject { current_user }
 
-  subject { current_user }
+    let(:user) { create(:user) }
 
-  context 'when remembe user' do
-    before { remember(user) }
+    context 'when session is nil' do
+      context 'with authenticated' do
+        before do
+          cookies.permanent.signed[:user_id] = user.id
+          allow_any_instance_of(User).to receive(:authenticated?).and_return(true)
+        end
 
-    context 'with session is nil (= not login)' do
-      it 'should returns right user' do
-        is_expected.to eq user
-      end
-    end
-
-    context 'with remember digest is wrong' do
-      before 'set wrong digest ' do
-        user.update(remember_digest: User.digest(User.new_token))
+        it { is_expected.to eq user }
       end
 
-      it { is_expected.to be_nil }
+      context 'with not authenticated' do
+        before do
+          cookies.permanent.signed[:user_id] = user.id
+          allow_any_instance_of(User).to receive(:authenticated?).and_return(false)
+        end
+
+        it { is_expected.to_not eq user }
+      end
     end
   end
 end

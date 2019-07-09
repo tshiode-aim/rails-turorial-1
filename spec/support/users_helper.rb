@@ -7,5 +7,9 @@ def log_in_as(user, password: 'password', remember_me: true)
 end
 
 def logout
+  click_link 'Log out'
+end
+
+def force_logout
   page.driver.submit :delete, logout_path, {}
 end
