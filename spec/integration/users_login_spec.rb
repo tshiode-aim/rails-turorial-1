@@ -2,20 +2,16 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe 'users login', type: :feature do
-  shared_context 'login_with_current_user' do
-    let(:user) { create(:user) }
+  let(:user) { create(:user) }
 
-    before do
-      visit login_path
-      fill_in 'Email', with: email
-      fill_in 'Password', with: password
-      click_button 'Log in'
-    end
+  before do
+    visit login_path
+    fill_in 'Email', with: email
+    fill_in 'Password', with: password
+    click_button 'Log in'
   end
 
   subject { page }
-
-  include_context 'login_with_current_user'
 
   let(:email) { user.email }
   let(:password) { 'password' }
