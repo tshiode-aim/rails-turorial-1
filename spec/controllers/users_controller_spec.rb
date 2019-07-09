@@ -45,11 +45,9 @@ describe UsersController, type: :feature do
   context 'when update user' do
     context 'with not login' do
       before do
-        page.driver.submit :patch, user_path(user), {
-          user: {
-            name: user.name,
-            email: user.email
-          }
+        page.driver.submit :patch, user_path(user), user: {
+          name: user.name,
+          email: user.email
         }
       end
 
@@ -76,11 +74,9 @@ describe UsersController, type: :feature do
   context 'when destroy user' do
     context 'with not login' do
       before do
-        page.driver.submit :delete, user_path(user), {
-          user: {
-            name: user.name,
-            email: user.email
-          }
+        page.driver.submit :delete, user_path(user), user: {
+          name: user.name,
+          email: user.email
         }
       end
 
