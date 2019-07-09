@@ -5,3 +5,7 @@ def log_in_as(user, password: 'password', remember_me: true)
   check 'session_remember_me' if remember_me
   click_button 'Log in'
 end
+
+def logout
+  page.driver.submit :delete, logout_path, {}
+end
