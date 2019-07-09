@@ -11,12 +11,9 @@ describe 'users signup', type: :feature do
         fill_in 'Name', with: ''
         fill_in 'Email', with: 'user@invalid'
         fill_in 'Password', with: 'foo'
-        fill_in 'Confirmation', with: 'bar'
+        fill_in 'Password confirmation', with: 'bar'
         click_on 'Create my account'
       }.to change(User, :count).by(0)
-
-    it 'should not increase user count' do
-      expect(initial_user_count).to eq User.count
     end
 
     describe 'after redirect page' do
@@ -25,7 +22,7 @@ describe 'users signup', type: :feature do
         fill_in 'Name', with: ''
         fill_in 'Email', with: 'user@invalid'
         fill_in 'Password', with: 'foo'
-        fill_in 'Confirmation', with: 'bar'
+        fill_in 'Password confirmation', with: 'bar'
         click_on 'Create my account'
       end
 
@@ -49,7 +46,7 @@ describe 'users signup', type: :feature do
         fill_in 'Name', with: 'Example User'
         fill_in 'Email', with: 'user@example.com'
         fill_in 'Password', with: 'password'
-        fill_in 'Confirmation', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
         click_on 'Create my account'
       }.to change(User, :count).by(1)
     end
@@ -60,7 +57,7 @@ describe 'users signup', type: :feature do
         fill_in 'Name', with: 'Example User'
         fill_in 'Email', with: 'user@example.com'
         fill_in 'Password', with: 'password'
-        fill_in 'Confirmation', with: 'password'
+        fill_in 'Password confirmation', with: 'password'
         click_on 'Create my account'
       end
 
