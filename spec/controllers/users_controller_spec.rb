@@ -72,4 +72,35 @@ describe UsersController, type: :feature do
       end
     end
   end
+
+  context 'when destroy user' do
+    context 'with not login' do
+      before do
+        page.driver.submit :delete, user_path(user), {
+          user: {
+            name: user.name,
+            email: user.email
+          }
+        }
+      end
+
+      it 'should redirect login page' do
+        is_expected.to have_selector("form[action='#{login_path}']")
+      end
+    end
+
+    context 'with login as wrong user' do
+      before do
+        log_in_as(other_user)
+        page.driver.submit :delete, user_path(user), user: {
+          name: user.name,
+          email: user.email
+        }
+      end
+
+      it 'should redirect root page' do
+        is_expected.to have_selector('h1', text: 'Welcome to the Sample App')
+      end
+    end
+  end
 end

@@ -43,8 +43,8 @@ describe 'users login', type: :feature do
     end
 
     it 'should update user information' do
-      expect(new_name).to eq user.name
-      expect(new_email).to eq user.email
+      expect(user.name).to eq new_name
+      expect(user.email).to eq new_email
     end
   end
 
@@ -67,8 +67,8 @@ describe 'users login', type: :feature do
     end
 
     it 'should update user information' do
-      expect(new_name).to eq user.name
-      expect(new_email).to eq user.email
+      expect(user.name).to eq new_name
+      expect(user.email).to eq new_email
     end
   end
 end

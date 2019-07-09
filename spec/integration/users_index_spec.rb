@@ -27,15 +27,16 @@ describe 'users index', type: :feature do
         is_expected.to have_selector("a[href='#{user_path(user)}']", text: 'delete') unless user == admin
       end
     end
+  end
 
-    context 'when delete user' do
-      let!(:initial_user_count) { User.count }
+  context 'when delete user' do
+    before do
+      log_in_as(admin)
+      visit users_path
+    end
 
-      before { click_link('delete', match: :first) }
-
-      it 'should decrease user count' do
-        expect(initial_user_count - 1).to eq User.count
-      end
+    it 'should decrease user count' do
+      expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
     end
   end
 
