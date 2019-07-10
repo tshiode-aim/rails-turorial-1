@@ -27,4 +27,22 @@ describe UserMailer do
       end
     end
   end
+
+  context 'when send password reset mail' do
+    let(:user) { create(:user) }
+    let(:password_reset_mail) { described_class.password_reset(user) }
+    let(:email_subject) { 'Password reset' }
+    let(:email_to) { [user.email] }
+    let(:email_from) { ['noreply@example.com'] }
+
+    before { user.reset_token = User.new_token }
+
+    it { expect(password_reset_mail.subject).to eq email_subject }
+    it { expect(password_reset_mail.to).to eq email_to }
+    it { expect(password_reset_mail.from).to eq email_from }
+
+    subject { password_reset_mail.body.encoded }
+    it { is_expected.to be_include(user.reset_token) }
+    it { is_expected.to be_include(CGI.escape(user.email)) }
+  end
 end
