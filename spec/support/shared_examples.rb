@@ -20,14 +20,10 @@ end
 
 shared_examples_for 'should redirect user page' do
   it { is_expected.to have_selector('section.user_info') }
-  it { is_expected.to have_selector("a[href='#{logout_path}']") }
-  it { is_expected.to have_selector("a[href='#{user_path(user)}']") }
 end
 
 shared_examples_for 'should not redirect user page' do
   it { is_expected.to have_no_selector('section.user_info') }
-  it { is_expected.to have_no_selector("a[href='#{logout_path}']") }
-  it { is_expected.to have_no_selector("a[href='#{user_path(user)}']") }
 end
 
 shared_examples_for 'should redirect edit page' do
@@ -36,6 +32,16 @@ end
 
 shared_examples_for 'should redirect signup page' do
   it { is_expected.to have_selector('form[action="/signup"]') }
+end
+
+# Login State
+
+shared_examples_for 'should state login' do
+  it { is_expected.to have_selector("a[href='#{logout_path}']", text: 'Log out') }
+end
+
+shared_examples_for 'should state not login' do
+  it { is_expected.to have_selector("a[href='#{login_path}']", text: 'Log in') }
 end
 
 ## Error messages

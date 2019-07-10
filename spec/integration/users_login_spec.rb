@@ -9,6 +9,7 @@ describe 'users login', type: :feature do
   context 'when login with valid information' do
     before { log_in_as(user) }
 
+    it_behaves_like 'should state login'
     it_behaves_like 'should redirect user page'
     it_behaves_like 'should not redirect login page'
   end
@@ -32,6 +33,7 @@ describe 'users login', type: :feature do
       logout
     end
 
+    it_behaves_like 'should state not login'
     it_behaves_like 'should redirect root page'
     it_behaves_like 'should not redirect user page'
   end
@@ -43,6 +45,7 @@ describe 'users login', type: :feature do
       force_logout
     end
 
+    it_behaves_like 'should state not login'
     it_behaves_like 'should redirect root page'
     it_behaves_like 'should not redirect user page'
   end
