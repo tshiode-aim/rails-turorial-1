@@ -7,9 +7,6 @@ describe UsersController, type: :feature do
   let(:user) { create(:user) }
   let(:other_user) { create(:user) }
 
-  let(:new_name) { 'new_name' }
-  let(:new_email) { 'new@example.com' }
-
   context 'when visit index page' do
     before { visit users_path }
 
@@ -46,6 +43,9 @@ describe UsersController, type: :feature do
   end
 
   context 'when update user' do
+    let(:new_name) { 'new_name' }
+    let(:new_email) { 'new@example.com' }
+
     context 'with not login' do
       before do
         page.driver.submit :patch, user_path(user), user: {

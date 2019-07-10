@@ -4,39 +4,29 @@ require 'spec_helper'
 describe 'users index', type: :feature do
   subject { page }
 
-  let(:admin) { create(:user, :admin) }
-  let(:non_admin) { create(:user, :non_admin) }
-
-  let(:first_page_of_users) { User.paginate(page: 1) }
-  let(:first_page_of_admin_users) { first_page_of_users.select(&:admin?) }
-  let(:first_page_of_non_admin_users) { first_page_of_users.reject(&:admin?) }
-
-  before 'create many users' do
-    30.times do |n|
-      create(:user, name: n, email: "example#{n}@example.com")
-    end
-  end
+  let!(:admin_user) { create(:user, :admin) }
+  let!(:non_admin_user) { create(:user, :non_admin) }
+  let!(:other_users) { create_list(:user, 10, admin: true) + create_list(:user, 10, admin: false) }
+  let!(:all_users) { other_users + [admin_user] + [non_admin_user] }
 
   context 'when visit index page as admin' do
     before do
-      log_in_as(admin)
+      log_in_as(admin_user)
       visit users_path
     end
 
     it '全てのユーザはユーザページへのリンクがあること' do
-      first_page_of_users.each do |user|
+      all_users.each do |user|
         is_expected.to have_selector("a[href='#{user_path(user)}']", text: user.name)
       end
     end
 
-    it '管理者であるユーザにはdeleteリンクがないこと' do
-      first_page_of_admin_users.each do |user|
-        is_expected.to have_no_selector("a[href='#{user_path(user)}']", text: 'delete')
-      end
+    it '自分はdeleteリンクがないこと' do
+      is_expected.to have_no_selector("a[href='#{user_path(admin_user)}']", text: 'delete')
     end
 
-    it '管理者ではないユーザにはdeleteリンクがあること' do
-      first_page_of_non_admin_users.each do |user|
+    it '自分以外のユーザにはdeleteリンクがあること' do
+      other_users.each do |user|
         is_expected.to have_selector("a[href='#{user_path(user)}']", text: 'delete')
       end
     end
@@ -44,7 +34,7 @@ describe 'users index', type: :feature do
 
   context 'when delete user' do
     before do
-      log_in_as(admin)
+      log_in_as(admin_user)
       visit users_path
     end
 
@@ -55,7 +45,7 @@ describe 'users index', type: :feature do
 
   context 'when visit index page as non-admin' do
     before do
-      log_in_as(non_admin)
+      log_in_as(non_admin_user)
       visit users_path
     end
 
