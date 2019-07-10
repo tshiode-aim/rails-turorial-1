@@ -33,9 +33,7 @@ describe 'users signup', type: :feature do
         is_expected.to have_selector('div#error_explanation > ul > li', text: 'Password is too short (minimum is 6 characters)')
       end
 
-      it 'should redirect signup page' do
-        is_expected.to have_selector('form[action="/signup"]')
-      end
+      it_behaves_like 'should redirect signup page'
     end
   end
 
@@ -61,13 +59,8 @@ describe 'users signup', type: :feature do
         click_on 'Create my account'
       end
 
-      it 'should not have any error messages' do
-        is_expected.to have_no_selector('div#error_explanation')
-      end
-
-      it 'should redirect user page' do
-        is_expected.to have_selector('section.user_info')
-      end
+      it_behaves_like 'should not have any error messages'
+      it_behaves_like 'should redirect root page'
     end
   end
 end
