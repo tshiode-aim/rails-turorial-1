@@ -4,7 +4,7 @@ require 'spec_helper'
 describe 'users login', type: :feature do
   subject { page }
 
-  let(:user) { create(:michael) }
+  let(:user) { create(:user, :admin) }
   let(:new_name) { 'Foo Bar' }
   let(:new_email) { 'foo@bar.com' }
 

@@ -4,12 +4,16 @@ require 'spec_helper'
 describe 'users index', type: :feature do
   subject { page }
 
-  let(:admin) { create(:michael) }
-  let(:non_admin) { create(:archer) }
+  let(:admin) { create(:user, :admin) }
+  let(:non_admin) { create(:user, :non_admin) }
+
+  let(:first_page_of_users) { User.paginate(page: 1) }
+  let(:first_page_of_admin_users) { first_page_of_users.select(&:admin?) }
+  let(:first_page_of_non_admin_users) { first_page_of_users.reject(&:admin?) }
 
   before 'create many users' do
     30.times do |n|
-      create(:archer, name: n, email: "example#{n}@example.com")
+      create(:user, name: n, email: "example#{n}@example.com")
     end
   end
 
@@ -19,12 +23,21 @@ describe 'users index', type: :feature do
       visit users_path
     end
 
-    let(:first_page_of_users) { User.paginate(page: 1) }
-
-    it 'should including pagination and delete links' do
+    it '全てのユーザはユーザページへのリンクがあること' do
       first_page_of_users.each do |user|
         is_expected.to have_selector("a[href='#{user_path(user)}']", text: user.name)
-        is_expected.to have_selector("a[href='#{user_path(user)}']", text: 'delete') unless user == admin
+      end
+    end
+
+    it '管理者であるユーザにはdeleteリンクがないこと' do
+      first_page_of_admin_users.each do |user|
+        is_expected.to have_no_selector("a[href='#{user_path(user)}']", text: 'delete')
+      end
+    end
+
+    it '管理者ではないユーザにはdeleteリンクがあること' do
+      first_page_of_non_admin_users.each do |user|
+        is_expected.to have_selector("a[href='#{user_path(user)}']", text: 'delete')
       end
     end
   end

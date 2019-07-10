@@ -4,7 +4,7 @@ require 'spec_helper'
 describe 'users login', type: :feature do
   subject { page }
 
-  let(:user) { create(:michael) }
+  let(:user) { create(:user) }
 
   context 'when login with valid information' do
     before { log_in_as(user) }

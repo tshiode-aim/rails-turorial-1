@@ -4,8 +4,11 @@ require 'spec_helper'
 describe UsersController, type: :feature do
   subject { page }
 
-  let(:user) { create(:michael) }
-  let(:other_user) { create(:archer) }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
+
+  let(:new_name) { 'new_name' }
+  let(:new_email) { 'new@example.com' }
 
   context 'when visit index page' do
     before { visit users_path }
@@ -46,8 +49,8 @@ describe UsersController, type: :feature do
     context 'with not login' do
       before do
         page.driver.submit :patch, user_path(user), user: {
-          name: user.name,
-          email: user.email
+          name: new_name,
+          email: new_email
         }
       end
 
@@ -60,8 +63,8 @@ describe UsersController, type: :feature do
       before do
         log_in_as(other_user)
         page.driver.submit :patch, user_path(user), user: {
-          name: user.name,
-          email: user.email
+          name: new_name,
+          email: new_email
         }
       end
 
@@ -74,10 +77,7 @@ describe UsersController, type: :feature do
   context 'when destroy user' do
     context 'with not login' do
       before do
-        page.driver.submit :delete, user_path(user), user: {
-          name: user.name,
-          email: user.email
-        }
+        page.driver.submit :delete, user_path(user), {}
       end
 
       it 'should redirect login page' do
@@ -88,10 +88,7 @@ describe UsersController, type: :feature do
     context 'with login as wrong user' do
       before do
         log_in_as(other_user)
-        page.driver.submit :delete, user_path(user), user: {
-          name: user.name,
-          email: user.email
-        }
+        page.driver.submit :delete, user_path(user), {}
       end
 
       it 'should redirect root page' do

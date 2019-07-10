@@ -4,7 +4,7 @@ require 'spec_helper'
 describe SessionsHelper, type: :helper do
   describe '#current_user' do
     subject { current_user }
-    let(:user) { create(:michael) }
+    let(:user) { create(:user) }
 
     context 'when session is nil' do
       context 'with authenticated' do
