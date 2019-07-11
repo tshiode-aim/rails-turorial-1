@@ -9,13 +9,22 @@ describe UserMailer do
     let(:email_to) { [user.email] }
     let(:email_from) { ['noreply@example.com'] }
 
-    it { expect(activation_mail.subject).to eq email_subject }
-    it { expect(activation_mail.to).to eq email_to }
-    it { expect(activation_mail.from).to eq email_from }
+    describe 'header' do
+      subject { activation_mail }
+      it do
+        expect(subject.subject).to eq email_subject
+        expect(subject.to).to eq email_to
+        expect(subject.from).to eq email_from
+      end
+    end
 
-    subject { activation_mail.body.encoded }
-    it { is_expected.to be_include(user.name) }
-    it { is_expected.to be_include(user.activation_token) }
-    it { is_expected.to be_include(CGI.escape(user.email)) }
+    describe 'content' do
+      subject { activation_mail.body.encoded }
+      it do
+        is_expected.to be_include(user.name)
+        is_expected.to be_include(user.activation_token)
+        is_expected.to be_include(CGI.escape(user.email))
+      end
+    end
   end
 end

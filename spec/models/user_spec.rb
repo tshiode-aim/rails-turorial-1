@@ -112,15 +112,13 @@ describe User, type: :model do
     end
   end
 
-  describe 'instance methods' do
-    describe '#authenticated?' do
-      context 'when digest is nil' do
-        let(:user) { create(:user) }
+  describe '#authenticated?' do
+    context 'when digest is nil' do
+      let(:user) { create(:user) }
 
-        subject { user.authenticated?(:remember, '') }
+      subject { user.authenticated?(:remember, '') }
 
-        it { is_expected.to be_falsey }
-      end
+      it { is_expected.to be_falsey }
     end
   end
 end
