@@ -6,8 +6,12 @@ end
 
 ## Redirect
 
-shared_examples_for 'should redirect root page' do
+shared_examples_for 'should redirect visitors root page' do
   it { is_expected.to have_selector('h1', text: 'Welcome to the Sample App') }
+end
+
+shared_examples_for 'should redirect members root page' do
+  it { is_expected.to have_selector('a', text: 'view my profile') }
 end
 
 shared_examples_for 'should redirect login page' do
