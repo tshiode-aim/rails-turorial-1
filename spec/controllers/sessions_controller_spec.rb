@@ -7,6 +7,6 @@ describe SessionsController, type: :feature do
   context 'when visit login page' do
     before { visit login_path }
 
-    it_should_behave_like 'should response code 200'
+    it_behaves_like 'should response code 200'
   end
 end

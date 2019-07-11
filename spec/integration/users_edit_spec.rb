@@ -19,9 +19,7 @@ describe 'users login', type: :feature do
       click_button 'Save changes'
     end
 
-    it 'should redirect edit page' do
-      is_expected.to have_selector("form[action='#{user_path(user)}']")
-    end
+    it_behaves_like 'should redirect edit page'
   end
 
   context 'when edit with valid information' do
@@ -34,13 +32,8 @@ describe 'users login', type: :feature do
       user.reload
     end
 
-    it 'should redirect user page' do
-      is_expected.to have_selector('section.user_info')
-    end
-
-    it 'should not have any error messages' do
-      is_expected.to have_no_selector('div.alert.alert-danger')
-    end
+    it_behaves_like 'should redirect user page'
+    it_behaves_like 'should not have any error messages'
 
     it 'should update user information' do
       expect(user.name).to eq new_name
@@ -58,13 +51,8 @@ describe 'users login', type: :feature do
       user.reload
     end
 
-    it 'should redirect user page' do
-      is_expected.to have_selector('section.user_info')
-    end
-
-    it 'should not have any error messages' do
-      is_expected.to have_no_selector('div.alert.alert-danger')
-    end
+    it_behaves_like 'should redirect user page'
+    it_behaves_like 'should not have any error messages'
 
     it 'should update user information' do
       expect(user.name).to eq new_name

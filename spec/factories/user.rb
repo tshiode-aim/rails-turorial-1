@@ -5,6 +5,7 @@ FactoryBot.define do
     password { 'password' }
     password_confirmation { password }
     admin { false }
+    activated { true }
 
     trait :admin do
       name { 'Michael Example' }

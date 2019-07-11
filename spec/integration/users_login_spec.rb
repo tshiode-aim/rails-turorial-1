@@ -9,34 +9,21 @@ describe 'users login', type: :feature do
   context 'when login with valid information' do
     before { log_in_as(user) }
 
-    it 'should redirect user page' do
-      is_expected.to have_selector('section.user_info')
-      is_expected.to have_selector("a[href='#{logout_path}']")
-      is_expected.to have_selector("a[href='#{user_path(user)}']")
-    end
-
-    it 'should not redirect login page' do
-      is_expected.to have_no_selector("a[href='#{login_path}']")
-    end
+    it_behaves_like 'should state login'
+    it_behaves_like 'should redirect user page'
+    it_behaves_like 'should not redirect login page'
   end
 
   context 'when login with invalid information' do
     before { log_in_as(user, password: '') }
 
-    it 'should redirect login page' do
-      is_expected.to have_selector('form[action="/login"]')
-    end
-
-    it 'should have any error messages' do
-      is_expected.to have_selector('div.alert.alert-danger')
-    end
+    it_behaves_like 'should redirect login page'
+    it_behaves_like 'should have any error messages'
 
     context 'when visit another page' do
       before { visit root_path }
 
-      it 'should clear error messages' do
-        is_expected.to have_no_selector('div.alert.alert-danger')
-      end
+      it_behaves_like 'should not have any error messages'
     end
   end
 
@@ -46,14 +33,9 @@ describe 'users login', type: :feature do
       logout
     end
 
-    it 'should redirect root_path' do
-      is_expected.to have_selector("a[href='#{login_path}']")
-    end
-
-    it 'should not redirect user page' do
-      is_expected.to have_no_selector("a[href='#{logout_path}']")
-      is_expected.to have_no_selector("a[href='#{user_path(user)}']")
-    end
+    it_behaves_like 'should state not login'
+    it_behaves_like 'should redirect root page'
+    it_behaves_like 'should not redirect user page'
   end
 
   context 'when logout after logout' do
@@ -63,14 +45,9 @@ describe 'users login', type: :feature do
       force_logout
     end
 
-    it 'should redirect root_path' do
-      is_expected.to have_selector("a[href='#{login_path}']")
-    end
-
-    it 'should not redirect user page' do
-      is_expected.to have_no_selector("a[href='#{logout_path}']")
-      is_expected.to have_no_selector("a[href='#{user_path(user)}']")
-    end
+    it_behaves_like 'should state not login'
+    it_behaves_like 'should redirect root page'
+    it_behaves_like 'should not redirect user page'
   end
 
   context 'when login with remembering' do
