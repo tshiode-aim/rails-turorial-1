@@ -2,7 +2,7 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe UserMailer do
-  context 'when send activation mail' do
+  describe '#account_activation' do
     let(:user) { create(:user) }
     let(:activation_mail) { described_class.account_activation(user) }
     let(:email_subject) { 'Account activation' }
@@ -28,14 +28,12 @@ describe UserMailer do
     end
   end
 
-  context 'when send password reset mail' do
-    let(:user) { create(:user) }
+  describe '#password_reset' do
+    let(:user) { create(:user, :prepare_reset) }
     let(:password_reset_mail) { described_class.password_reset(user) }
     let(:email_subject) { 'Password reset' }
     let(:email_to) { [user.email] }
     let(:email_from) { ['noreply@example.com'] }
-
-    before { user.reset_token = User.new_token }
 
     it { expect(password_reset_mail.subject).to eq email_subject }
     it { expect(password_reset_mail.to).to eq email_to }

@@ -18,5 +18,9 @@ FactoryBot.define do
       email { 'duchess@example.gov' }
       admin { false }
     end
+
+    trait :prepare_reset do
+      after(:create, &:create_reset_digest)
+    end
   end
 end
