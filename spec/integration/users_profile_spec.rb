@@ -8,7 +8,7 @@ describe 'users profile', type: :feature do
 
   context 'when visit users profile' do
     before do
-      microposts_count.times { user.microposts.create!(content: 'Hey!') }
+      create_list(:micropost, microposts_count, user: user)
       visit user_path(user)
     end
 
@@ -29,13 +29,16 @@ describe 'users profile', type: :feature do
         is_expected.to have_selector('h1 > img.gravatar')
       end
 
-      it 'should view count of user microposts' do
-        expect(page.body).to be_include user.microposts.count.to_s
-      end
+      describe 'verification html body' do
+        subject { page.body }
+        it 'should view count of user microposts' do
+          is_expected.to be_include user.microposts.count.to_s
+        end
 
-      it 'should view all microposts of user' do
-        user.microposts.each do |micropost|
-          expect(page.body).to be_include micropost.content
+        it 'should view all microposts of user' do
+          user.microposts.each do |micropost|
+            is_expected.to be_include micropost.content
+          end
         end
       end
     end
