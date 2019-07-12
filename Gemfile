@@ -31,6 +31,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'database_rewinder'
   gem 'factory_bot_rails'
   gem 'guard',                    '2.13.0'
   gem 'guard-minitest',           '2.4.4'
