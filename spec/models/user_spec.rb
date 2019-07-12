@@ -135,80 +135,80 @@ describe User, type: :model do
   end
 
   describe '#follow' do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
 
-    context 'when user1 follow user2' do
-      subject { user1.follow(user2) }
+    context 'when user follow other_user' do
+      subject { user.follow(other_user) }
 
       it 'should increase following count' do
-        expect { subject }.to change(user1.following, :count).by(1)
+        expect { subject }.to change(user.following, :count).by(1)
       end
     end
   end
 
   describe '#unfollow' do
-    before { user1.follow(user2) }
+    before { user.follow(other_user) }
 
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
 
-    context 'when user1 unfollow user2' do
-      subject { user1.unfollow(user2) }
+    context 'when user unfollow other_user' do
+      subject { user.unfollow(other_user) }
 
       it 'should decrease following count' do
-        expect { subject }.to change(user1.following, :count).by(-1)
+        expect { subject }.to change(user.following, :count).by(-1)
       end
     end
   end
 
   describe '#following?' do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
 
-    subject { user1 }
+    subject { user }
 
-    context 'when user1 following user2' do
-      before { user1.follow(user2) }
+    context 'when user following other_user' do
+      before { user.follow(other_user) }
 
-      it { is_expected.to be_following(user2) }
+      it { is_expected.to be_following(other_user) }
     end
 
-    context 'when user1 not following user2' do
-      it { is_expected.to_not be_following(user2) }
+    context 'when user not following other_user' do
+      it { is_expected.to_not be_following(other_user) }
     end
   end
 
   describe '#feed' do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
-    let(:user3) { create(:user) }
+    let(:user) { create(:user) }
+    let(:followed_user) { create(:user) }
+    let(:non_followed_user) { create(:user) }
 
     before do
-      create_list(:micropost, 10, user: user1)
-      create_list(:micropost, 10, user: user2)
-      create_list(:micropost, 10, user: user3)
+      create_list(:micropost, 10, user: user)
+      create_list(:micropost, 10, user: followed_user)
+      create_list(:micropost, 10, user: non_followed_user)
     end
 
-    subject { user1.feed }
+    subject { user.feed }
 
-    context 'when user1 following user2' do
-      before { user1.follow(user2) }
+    context 'when user following other_user' do
+      before { user.follow(followed_user) }
 
       it 'should include self posts' do
-        user1.microposts.each do |micropost|
+        user.microposts.each do |micropost|
           is_expected.to be_include(micropost)
         end
       end
 
-      it 'should include user2 posts' do
-        user2.microposts.each do |micropost|
+      it 'should include other_user posts' do
+        followed_user.microposts.each do |micropost|
           is_expected.to be_include(micropost)
         end
       end
 
       it 'should not include user3 posts' do
-        user3.microposts.each do |micropost|
+        non_followed_user.microposts.each do |micropost|
           is_expected.to_not be_include(micropost)
         end
       end

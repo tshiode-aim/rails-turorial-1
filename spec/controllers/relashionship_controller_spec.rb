@@ -2,14 +2,14 @@ require 'rails_helper'
 require 'spec_helper'
 
 describe RelationshipsController, type: :controller do
-  let(:user1) { create(:user) }
-  let(:user2) { create(:user) }
+  let(:user) { create(:user) }
+  let(:other_user) { create(:user) }
 
   describe '#create' do
     context 'when follow a user the standard way' do
-      before { set_current_user(user1) }
+      before { set_current_user(user) }
 
-      subject { post :create, params: { followed_id: user2.id } }
+      subject { post :create, params: { followed_id: other_user.id } }
 
       it 'should increase following users' do
         expect { subject }.to change(Relationship, :count).by(1)
@@ -17,17 +17,17 @@ describe RelationshipsController, type: :controller do
     end
 
     context 'when follow a user with Ajax' do
-      before { set_current_user(user1) }
+      before { set_current_user(user) }
 
-      subject { post :create, xhr: true, params: { followed_id: user2.id } }
+      subject { post :create, xhr: true, params: { followed_id: other_user.id } }
 
       it 'should increase following users' do
-        expect { subject }.to change(user1.following, :count).by(1)
+        expect { subject }.to change(user.following, :count).by(1)
       end
     end
 
     context 'when follow with not login' do
-      subject { post :create, params: { followed_id: user2.id } }
+      subject { post :create, params: { followed_id: other_user.id } }
 
       it 'should not create relationship' do
         expect { subject }.to change(Relationship, :count).by(0)
@@ -40,13 +40,13 @@ describe RelationshipsController, type: :controller do
   end
 
   describe '#destroy' do
-    let!(:relationship) { create(:relationship, follower: user1, followed: user2) }
+    let!(:relationship) { create(:relationship, follower: user, followed: other_user) }
 
     context 'when unfollow a user the standard way' do
       subject { delete :destroy, params: { id: relationship.id } }
 
       it 'should decrease following users' do
-        set_current_user(user1)
+        set_current_user(user)
         expect { subject }.to change(Relationship, :count).by(-1)
       end
     end
@@ -55,7 +55,7 @@ describe RelationshipsController, type: :controller do
       subject { delete :destroy, xhr: true, params: { id: relationship.id } }
 
       it 'should decrease following users' do
-        set_current_user(user1)
+        set_current_user(user)
         expect { subject }.to change(Relationship, :count).by(-1)
       end
     end

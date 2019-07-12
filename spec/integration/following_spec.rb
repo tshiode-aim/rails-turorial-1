@@ -3,17 +3,17 @@ require 'spec_helper'
 
 describe 'following', type: :feature do
   before do
-    user.follow(other_user1)
-    other_user2.follow(user)
+    user.follow(followed)
+    follower.follow(user)
     create_list(:micropost, 10, user: user)
-    create_list(:micropost, 8, user: other_user1)
-    create_list(:micropost, 12, user: other_user2)
+    create_list(:micropost, 8, user: followed)
+    create_list(:micropost, 12, user: follower)
     log_in_as(user)
   end
 
   let(:user) { create(:user) }
-  let(:other_user1) { create(:user) }
-  let(:other_user2) { create(:user) }
+  let(:followed) { create(:user) }
+  let(:follower) { create(:user) }
 
   subject { page }
 
