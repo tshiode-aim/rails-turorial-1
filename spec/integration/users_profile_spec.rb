@@ -18,7 +18,7 @@ describe 'users profile', type: :feature do
       let(:microposts_count) { 10 }
 
       it 'should title include user name' do
-        is_expected.to have_selector('title', text: full_title(user.name), visible: false)
+        is_expected.to have_selector('title', text: full_title(CGI.escapeHTML(user.name)), visible: false)
       end
 
       it 'should have user name in h1 tag' do
