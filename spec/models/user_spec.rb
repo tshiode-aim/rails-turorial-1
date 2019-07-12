@@ -112,6 +112,18 @@ describe User, type: :model do
     end
   end
 
+  describe 'association' do
+    context 'when destroy user which has microposts' do
+      before { user.microposts.create!(content: 'Hey!') }
+
+      let(:user) { create(:user) }
+
+      it 'should be destroyed microposts with user' do
+        expect { user.destroy }.to change(Micropost, :count).by(-1)
+      end
+    end
+  end
+
   describe '#authenticated?' do
     context 'when digest is nil' do
       let(:user) { create(:user) }
@@ -119,6 +131,87 @@ describe User, type: :model do
       subject { user.authenticated?(:remember, '') }
 
       it { is_expected.to be_falsey }
+    end
+  end
+
+  describe '#follow' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    context 'when user follow other_user' do
+      subject { user.follow(other_user) }
+
+      it 'should increase following count' do
+        expect { subject }.to change(user.following, :count).by(1)
+      end
+    end
+  end
+
+  describe '#unfollow' do
+    before { user.follow(other_user) }
+
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    context 'when user unfollow other_user' do
+      subject { user.unfollow(other_user) }
+
+      it 'should decrease following count' do
+        expect { subject }.to change(user.following, :count).by(-1)
+      end
+    end
+  end
+
+  describe '#following?' do
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    subject { user }
+
+    context 'when user following other_user' do
+      before { user.follow(other_user) }
+
+      it { is_expected.to be_following(other_user) }
+    end
+
+    context 'when user not following other_user' do
+      it { is_expected.to_not be_following(other_user) }
+    end
+  end
+
+  describe '#feed' do
+    let(:user) { create(:user) }
+    let(:followed_user) { create(:user) }
+    let(:non_followed_user) { create(:user) }
+
+    before do
+      create_list(:micropost, 10, user: user)
+      create_list(:micropost, 10, user: followed_user)
+      create_list(:micropost, 10, user: non_followed_user)
+    end
+
+    subject { user.feed }
+
+    context 'when user following other_user' do
+      before { user.follow(followed_user) }
+
+      it 'should include self posts' do
+        user.microposts.each do |micropost|
+          is_expected.to be_include(micropost)
+        end
+      end
+
+      it 'should include other_user posts' do
+        followed_user.microposts.each do |micropost|
+          is_expected.to be_include(micropost)
+        end
+      end
+
+      it 'should not include user3 posts' do
+        non_followed_user.microposts.each do |micropost|
+          is_expected.to_not be_include(micropost)
+        end
+      end
     end
   end
 end

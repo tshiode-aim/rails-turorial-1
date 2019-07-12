@@ -13,3 +13,7 @@ end
 def force_logout
   page.driver.submit :delete, logout_path, {}
 end
+
+def set_current_user(user)
+  allow_any_instance_of(SessionsHelper).to receive(:current_user).and_return(user)
+end

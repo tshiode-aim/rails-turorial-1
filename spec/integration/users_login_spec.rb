@@ -34,7 +34,7 @@ describe 'users login', type: :feature do
     end
 
     it_behaves_like 'should state not login'
-    it_behaves_like 'should redirect root page'
+    it_behaves_like 'should redirect visitors root page'
     it_behaves_like 'should not redirect user page'
   end
 
@@ -46,7 +46,7 @@ describe 'users login', type: :feature do
     end
 
     it_behaves_like 'should state not login'
-    it_behaves_like 'should redirect root page'
+    it_behaves_like 'should redirect visitors root page'
     it_behaves_like 'should not redirect user page'
   end
 

@@ -32,7 +32,7 @@ describe UsersController, type: :feature do
         visit edit_user_path(user)
       end
 
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect members root page'
     end
   end
 
@@ -60,7 +60,7 @@ describe UsersController, type: :feature do
         }
       end
 
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect members root page'
     end
   end
 
@@ -79,7 +79,19 @@ describe UsersController, type: :feature do
         page.driver.submit :delete, user_path(user), {}
       end
 
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect members root page'
     end
+  end
+
+  context 'when visit following page without login' do
+    before { visit following_user_path(user) }
+
+    it_behaves_like 'should redirect login page'
+  end
+
+  context 'when visit followers page without login' do
+    before { visit followers_user_path(user) }
+
+    it_behaves_like 'should redirect login page'
   end
 end
