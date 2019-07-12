@@ -50,19 +50,19 @@ describe 'password resets', type: :feature do
     context 'with invalid email' do
       let(:email) { '' }
 
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect visitors root page'
     end
 
     context 'with not-activated user' do
       let(:user) { create(:user, activated: false) }
 
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect visitors root page'
     end
 
     context 'with invalid token' do
       let(:token) { 'wrong token' }
 
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect visitors root page'
     end
   end
 

@@ -29,7 +29,7 @@ describe 'users signup', type: :feature do
       end
 
       it_behaves_like 'should not have any error messages'
-      it_behaves_like 'should redirect root page'
+      it_behaves_like 'should redirect visitors root page'
     end
   end
 
@@ -89,7 +89,7 @@ describe 'users signup', type: :feature do
 
     subject { page }
 
-    it_behaves_like 'should redirect root page'
+    it_behaves_like 'should redirect visitors root page'
     it { is_expected.to have_text 'Invalid activation link' }
   end
 
@@ -107,7 +107,7 @@ describe 'users signup', type: :feature do
 
     before { log_in_as(user) }
 
-    it_behaves_like 'should redirect root page'
+    it_behaves_like 'should redirect visitors root page'
     it_behaves_like 'should state not login'
   end
 end

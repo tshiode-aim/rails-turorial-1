@@ -112,6 +112,18 @@ describe User, type: :model do
     end
   end
 
+  describe 'association' do
+    context 'when destroy user which has microposts' do
+      before { user.microposts.create!(content: 'Hey!') }
+
+      let(:user) { create(:user) }
+
+      it 'should be destroyed microposts with user' do
+        expect { user.destroy }.to change(Micropost, :count).by(-1)
+      end
+    end
+  end
+
   describe '#authenticated?' do
     context 'when digest is nil' do
       let(:user) { create(:user) }
