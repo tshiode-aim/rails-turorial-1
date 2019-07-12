@@ -82,4 +82,16 @@ describe UsersController, type: :feature do
       it_behaves_like 'should redirect members root page'
     end
   end
+
+  context 'when visit following page without login' do
+    before { visit following_user_path(user) }
+
+    it_behaves_like 'should redirect login page'
+  end
+
+  context 'when visit followers page without login' do
+    before { visit followers_user_path(user) }
+
+    it_behaves_like 'should redirect login page'
+  end
 end

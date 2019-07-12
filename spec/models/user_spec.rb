@@ -133,4 +133,85 @@ describe User, type: :model do
       it { is_expected.to be_falsey }
     end
   end
+
+  describe '#follow' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    context 'when user1 follow user2' do
+      subject { user1.follow(user2) }
+
+      it 'should increase following count' do
+        expect { subject }.to change(user1.following, :count).by(1)
+      end
+    end
+  end
+
+  describe '#unfollow' do
+    before { user1.follow(user2) }
+
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    context 'when user1 unfollow user2' do
+      subject { user1.unfollow(user2) }
+
+      it 'should decrease following count' do
+        expect { subject }.to change(user1.following, :count).by(-1)
+      end
+    end
+  end
+
+  describe '#following?' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+
+    subject { user1 }
+
+    context 'when user1 following user2' do
+      before { user1.follow(user2) }
+
+      it { is_expected.to be_following(user2) }
+    end
+
+    context 'when user1 not following user2' do
+      it { is_expected.to_not be_following(user2) }
+    end
+  end
+
+  describe '#feed' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    let(:user3) { create(:user) }
+
+    before do
+      create_list(:micropost, 10, user: user1)
+      create_list(:micropost, 10, user: user2)
+      create_list(:micropost, 10, user: user3)
+    end
+
+    subject { user1.feed }
+
+    context 'when user1 following user2' do
+      before { user1.follow(user2) }
+
+      it 'should include self posts' do
+        user1.microposts.each do |micropost|
+          is_expected.to be_include(micropost)
+        end
+      end
+
+      it 'should include user2 posts' do
+        user2.microposts.each do |micropost|
+          is_expected.to be_include(micropost)
+        end
+      end
+
+      it 'should not include user3 posts' do
+        user3.microposts.each do |micropost|
+          is_expected.to_not be_include(micropost)
+        end
+      end
+    end
+  end
 end
